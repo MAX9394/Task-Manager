@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html ng-app="taskApp">
+<head>
+  <meta charset="UTF-8" />
+  <title>Task Manager</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.3/angular.min.js"></script>
+  <script src="app.js"></script>
+</head>
+<body ng-controller="TaskController">
+
+  <h1>Task Manager</h1>
+
+  <!-- Add / Edit Form -->
+  <div class="form-section">
+    <h2>{{ editMode ? 'Edit Task' : 'Add Task' }}</h2>
+    <form ng-submit="editMode ? updateTask() : createTask()">
+      <input type="text" ng-model="form.title" placeholder="Title" required />
+      <input type="text" ng-model="form.description" placeholder="Description" />
+      <label>
+        <input type="checkbox" ng-model="form.status" /> Completed
+      </label>
+      <button type="submit">{{ editMode ? 'Update' : 'Add' }}</button>
+      <button type="button" ng-if="editMode" ng-click="cancelEdit()">Cancel</button>
+    </form>
+    <p class="error" ng-if="errorMsg">{{ errorMsg }}</p>
+  </div>
+
+  <!-- Task List -->
+  <div class="list-section">
+    <h2>Tasks</h2>
+    <p ng-if="tasks.length === 0">No tasks yet.</p>
+    <table ng-if="tasks.length > 0">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Description</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="task in tasks">
+          <td>{{ task.title }}</td>
+          <td>{{ task.description }}</td>
+          <td>{{ task.status ? 'Done' : 'Pending' }}</td>
+          <td>
+            <button ng-click="editTask(task)">Edit</button>
+            <button ng-click="deleteTask(task._id)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</body>
+</html>
